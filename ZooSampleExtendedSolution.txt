@@ -1,0 +1,90 @@
+using System;
+
+// Step 1: Define the Strategy Interface
+public interface IFeedingStrategy
+{
+    void Feed();
+}
+
+// Step 1: Implement Concrete Strategies
+public class HerbivoreFeedingStrategy : IFeedingStrategy
+{
+    public void Feed()
+    {
+        Console.WriteLine("Feeding with plants and vegetables.");
+    }
+}
+
+public class CarnivoreFeedingStrategy : IFeedingStrategy
+{
+    public void Feed()
+    {
+        Console.WriteLine("Feeding with meat and protein.");
+    }
+}
+
+// Step 2: Implement the Context Class
+public class Animal
+{
+    public string Name { get; }
+    public IFeedingStrategy FeedingStrategy { get; set; }
+
+    public Animal(string name, IFeedingStrategy feedingStrategy)
+    {
+        Name = name;
+        FeedingStrategy = feedingStrategy;
+    }
+
+    public void FeedAnimal()
+    {
+        Console.Write($"{Name}: ");
+        FeedingStrategy.Feed();
+    }
+}
+
+// Step 3: Implement the Singleton Pattern for Zoo Management
+public class ZooManager
+{
+    private static ZooManager instance;
+
+    private ZooManager() { }
+
+    public static ZooManager GetInstance()
+    {
+        if (instance == null)
+        {
+            instance = new ZooManager();
+        }
+        return instance;
+    }
+
+    public void ManageZoo()
+    {
+        Console.WriteLine("Zoo management tasks...");
+    }
+}
+
+// Step 4: Implement Main Program
+class Program
+{
+    static void Main()
+    {
+        // Step 4: Create instances of concrete strategies
+        IFeedingStrategy herbivoreStrategy = new HerbivoreFeedingStrategy();
+        IFeedingStrategy carnivoreStrategy = new CarnivoreFeedingStrategy();
+
+        // Step 4: Create instances of the Animal class
+        Animal giraffe = new Animal("Giraffe", herbivoreStrategy);
+        Animal lion = new Animal("Lion", carnivoreStrategy);
+
+        // Step 4: Demonstrate feeding the animals
+        giraffe.FeedAnimal();
+        lion.FeedAnimal();
+
+        // Step 4: Use the ZooManager singleton
+        ZooManager zooManager = ZooManager.GetInstance();
+        zooManager.ManageZoo();
+
+        Console.ReadLine();
+    }
+}
